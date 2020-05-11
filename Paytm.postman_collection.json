@@ -1,0 +1,115 @@
+{
+	"info": {
+		"_postman_id": "6f8cb641-7062-4b4e-b340-dd91ebc02530",
+		"name": "Paytm",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Getcall",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "7c295093-b250-437d-aa71-6dc6f62ce396",
+						"exec": [
+							"",
+							"",
+							"//Test 1: Check status code",
+							"pm.test(\"Test 1:Status code is 200\", function() {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"",
+							"//Test 2: Check moviePosterUrl format",
+							"pm.test('Contain jpg Format only', () => {",
+							"    var jsonData = pm.response.json()",
+							"  ",
+							"    for (i = 0; i < jsonData.upcomingMovieData.length; i++) {",
+							"        pm.expect(jsonData.upcomingMovieData[i].moviePosterUrl).to.have.string('.jpg');",
+							"    }",
+							"});",
+							"",
+							"//Test 3: Check release date should be before today's date",
+							"pm.test(\"date should be less than todays date\", function() {",
+							"     var jsonData = pm.response.json()",
+							"     var currentDate = new Date();",
+							"    console.log(currentDate);",
+							"     ",
+							"    for (i = 0; i < jsonData.upcomingMovieData.length; i++) {",
+							"            var myDate = new Date(jsonData.upcomingMovieData[i].releaseDate)",
+							"            pm.expect(myDate).to.not.be.below(currentDate);",
+							"",
+							"            }",
+							"});",
+							"",
+							"// pm.test(\"No movie code should have more than one language format\", function() {",
+							"//      var jsonData = pm.response.json()",
+							"//          for (i = 0; i < jsonData.upcomingMovieData.length; i++) {",
+							"//              console.log(jsonData.upcomingMovieData[i].language)",
+							"//             pm.expect(jsonData.upcomingMovieData[i].language).toHaveLength(1)",
+							"//             }",
+							"// });",
+							"",
+							"//Test 4: Test Paytmcode are unique",
+							"function checkIfpaytmMovieCodeIsUnique(array) {",
+							"  return array.length === new Set(array).size;",
+							"}",
+							"pm.test('Check paytmcode are unique', () => {",
+							"        var jsonData = pm.response.json()",
+							"",
+							"    let code = []",
+							"    _.each(jsonData.upcomingMovieData, (item) => {",
+							"        code.push(item.paytmMovieCode)",
+							"    })",
+							"",
+							"    pm.expect(checkIfpaytmMovieCodeIsUnique(code), code).to.be.true",
+							"})",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "79207227-4706-46da-afdd-ce1d09544637",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": {
+					"raw": "https://apiproxy.paytm.com/v2/movies/upcoming",
+					"protocol": "https",
+					"host": [
+						"apiproxy",
+						"paytm",
+						"com"
+					],
+					"path": [
+						"v2",
+						"movies",
+						"upcoming"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
